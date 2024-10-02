@@ -5,14 +5,14 @@
 //    const [remember,setRemember]=useState('Bilal')
 
 // //   console.log(userName);
-  
+
 // // function handleUbdateuserName() {
 // //   setUserName('Code Aur Kashif')
-// //   console.log(userName); 
+// //   console.log(userName);
 //   // const [value,setValue]=useState(0)
 //   // const handleIncrementValue=()=>{
 //   //   setValue(value+1)
-    
+
 //   // }
 //   // const handleDecrementValue=()=>{
 //   //   setValue(value-1)
@@ -20,12 +20,12 @@
 //   const handleInput=(e)=>{
 //     setUserName(e.target.value);
 //   console.log(userName);
-    
+
 //   }
 //   const handleCheckbox=(e)=>{
 //     setRemember(e.target.checked)
 //     console.log(!remember);
-    
+
 //   }
 //   return (
 //     <div>
@@ -47,89 +47,150 @@
 //     </div>
 //   )
 // }
-
-
 // export default App
 // Continues:-
 // Build a Finance Manager App
-/* import React from 'react'
-import { useState } from 'react'
+import React from "react";
+import { useState } from "react";
 const App = () => {
-  const [amount,setAmount]=useState(0)
-  const [income,setincome]=useState('income')
-  const [submit,setSubmit]=useState([])
-  const handleSubmit=()=>{
-    console.log('Amount=>',amount);
-    console.log('Income=>',income); 
-  }
-  console.log(amount);
-  
+  const [amount, setAmount] = useState("");
+  const [income, setincome] = useState("income");
+  const [submit, setSubmit] = useState([]);
+  const handleSubmit = () => {
+    setSubmit([...submit, { amount, income }]);
+    setAmount("");
+  };
+  console.log(submit);
+  const totalAmout = submit.reduce(
+    (acc, currentVal) =>
+      currentVal.income == "income" ? acc+Number(currentVal.amount) : acc,0
+  );
+  const totalExpense = submit.reduce(
+    (acc, currentVal) =>
+      currentVal.income == "expense" ? acc + Number(currentVal.amount) : acc,0
+  );  
+  const totalBalance = totalAmout - totalExpense;
   return (
-    <div className='flex flex-col justify-center items-center mt-10 m-2'>
-      <div className='flex gap-6 '>
-    <input value={amount} onChange={(e)=>setAmount(e.target.value)} type="number" placeholder='Add Your Amount' className='border-purple-500 rounded-md border-2'/>
-    <select value={income} onChange={(e)=>setincome(e.target.value) } className='border-purple-700 rounded-md border-2 px-2 m-2'>
-      <option value="income">Income</option>
-      <option value="expense">Expense</option>
-    </select>
-    <button className=' border-purple-700 rounded-md border-2 px-2 m-2' onClick={handleSubmit}>Submit</button>
-      </div>
-    </div>
-  )
-}
-
-export default App */
-// Build a Finance Manager App with UI
-
-import React from 'react';
-import { useState } from 'react';
-const App = () => {
-  const [amount,setAmount]=useState(0)
-  const [income,setIncome]=useState('income')
-  const [submission,setSubmission]=useState()
-  const handleSubmition=()=>{
-    console.log('amount=>',amount);
-    console.log('income=>',income);    
-  }  
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-80 transform hover:scale-105 transition-transform duration-300">
-        <h2 className="text-lg font-bold mb-4 text-center">Transaction Summary</h2>
-
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <div className="bg-green-100 p-3 rounded text-center hover:bg-green-200 transition-colors duration-300">
-            <h3 className="text-sm font-semibold">Income</h3>
-            <p className="text-green-600 font-bold hover:text-green-700 transition-colors duration-300">$0.00</p>
-          </div>
-          <div className="bg-red-100 p-3 rounded text-center hover:bg-red-200 transition-colors duration-300">
-            <h3 className="text-sm font-semibold">Expense</h3>
-            <p className="text-red-600 font-bold hover:text-red-700 transition-colors duration-300">$0.00</p>
-          </div>
-          <div className="bg-blue-100 p-3 rounded text-center hover:bg-blue-200 transition-colors duration-300">
-            <h3 className="text-sm font-semibold">Balance</h3>
-            <p className="text-blue-600 font-bold hover:text-blue-700 transition-colors duration-300">$0.00</p>
-          </div>
+    <div className="flex flex-col justify-center items-center mt-10 m-2">
+      <div className="flex gap-5 my-10">
+        <div className="p-1 border border-blue-600 rounded-md w-20 text-center">
+          <h1>Income</h1>
+          <h1>{totalAmout}</h1>
         </div>
+        <div className="p-1  border  border-blue-600 rounded-md w-20 text-center">
+          <h1>Expense</h1>
+          <h1>{totalExpense}</h1>
+        </div>
+        <div className={`p-1  border  border-blue-600 rounded-md w-20 text-center ${totalBalance>0 ?'bg-green-50':'bg-red-50'}`}>
+          <h1>Balance</h1>
+          <h1>{totalBalance}</h1>
+        </div>
+      </div>
 
-        <h2 className="text-lg font-bold mb-4 text-center">Transaction Form</h2>
+      <div className="flex gap-6 ">
         <input
-          onChange={(e)=>setAmount(e.target.value)}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
           type="number"
-          placeholder="Enter amount"
-          className="border border-gray-300 p-2 rounded mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-300"
+          placeholder="Add Your Amount"
+          className="border-purple-500 rounded-md border-2"
         />
-        <select className="border border-gray-300 p-2 rounded mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-300" onChange={(e)=>setIncome(e.target.value)}>
+        <select
+          value={income}
+          onChange={(e) => setincome(e.target.value)}
+          className="border-purple-700 rounded-md border-2 px-2 m-2"
+        >
           <option value="income">Income</option>
           <option value="expense">Expense</option>
         </select>
-        <button className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600 transform hover:scale-105 transition-all duration-300" onClick={handleSubmition}>
+        <button
+          className=" border-purple-700 rounded-md border-2 px-2 m-2"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
+      </div>
+      <div>
+        {submit.map((data, index) => {
+          return (
+            <div
+              key={index}
+              className="flex text-center justify-between items-center gap-10"
+            >
+              <h1 className="text-3xl font-bold underline">
+                Sno:{index + 1} Amount: {data.amount}
+              </h1>
+              <h1
+                className={`text-3xl font-bold underline ${
+                  data.income == "income" ? "text-green-500" : "text-red-600"
+                }`}
+              >
+                {data.income}
+              </h1>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
 export default App;
+// Build a Finance Manager App with UI
 
+// import React from 'react';
+// import { useState } from 'react';
+// const App = () => {
+//   const [amount,setAmount]=useState(0)
+//   const [income,setIncome]=useState('income')
+//   const [submission,setSubmission]=useState([])
+//   const handleSubmition=()=>{
+//     // console.log('amount=>',amount);
+//     // console.log('income=>',income);
+//        setSubmission([submission ,{amount,income}])
+//        setAmount('')
+//        setIncome('income')
+//   }
+//   console.log(submission);
 
+//   return (
+//     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+//       <div className="bg-white p-6 rounded-lg shadow-md w-80 transform hover:scale-105 transition-transform duration-300">
+//         <h2 className="text-lg font-bold mb-4 text-center">Transaction Summary</h2>
+
+//         <div className="grid grid-cols-3 gap-4 mb-4">
+//           <div className="bg-green-100 p-3 rounded text-center hover:bg-green-200 transition-colors duration-300">
+//             <h3 className="text-sm font-semibold">Income</h3>
+//             <p className="text-green-600 font-bold hover:text-green-700 transition-colors duration-300">$0.00</p>
+//           </div>
+//           <div className="bg-red-100 p-3 rounded text-center hover:bg-red-200 transition-colors duration-300">
+//             <h3 className="text-sm font-semibold">Expense</h3>
+//             <p className="text-red-600 font-bold hover:text-red-700 transition-colors duration-300">$0.00</p>
+//           </div>
+//           <div className="bg-blue-100 p-3 rounded text-center hover:bg-blue-200 transition-colors duration-300">
+//             <h3 className="text-sm font-semibold">Balance</h3>
+//             <p className="text-blue-600 font-bold hover:text-blue-700 transition-colors duration-300">$0.00</p>
+//           </div>
+//         </div>
+
+//         <h2 className="text-lg font-bold mb-4 text-center">Transaction Form</h2>
+//         <input
+//           onChange={(e)=>setAmount(e.target.value)}
+//           type="number"
+//           placeholder="Enter amount"
+//           className="border border-gray-300 p-2 rounded mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-300"
+//         />
+//         <select className="border border-gray-300 p-2 rounded mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-300" onChange={(e)=>setIncome(e.target.value)}>
+//           <option value="income">Income</option>
+//           <option value="expense">Expense</option>
+//         </select>
+//         <button className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600 transform hover:scale-105 transition-all duration-300" onClick={handleSubmition}>
+//           Submit
+//         </button>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default App;
